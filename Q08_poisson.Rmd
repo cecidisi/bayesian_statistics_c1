@@ -1,0 +1,172 @@
+---
+title: 'Quizz 8: Poisson'
+output:
+  html_document:
+    df_print: paged
+---
+
+------------------------------
+
+[Back to Index](Q_index.html)
+
+------------------------------
+
+
+
+## Cookies
+
+**For Questions 1-8, consider the chocolate chip cookie example from the lesson.**
+
+As in the lesson, we use a Poisson likelihood to model the number of chips per cookie, and a conjugate gamma prior on $\lambda$, the expected number of chips per cookie. Suppose your prior expectation for $\lambda$ is 8.
+
+
+### Question 1
+
+
+The conjugate prior with mean 8 and effective sample size of 2 is $\text{Gamma}(a,2)$. Find the value of a.
+
+
+* prior mean $E[\lambda] = \frac{\alpha}{\beta}  = 8$
+* effective sample size $n_{eff} = \beta = 2$
+* $\Rightarrow \alpha = 8 \times 2 = 16$
+
+
+
+### Question 2
+
+The conjugate prior with mean 8 and standard deviation 1 is $\text{Gamma(a,8)}$. Find the value of a.
+
+* $E[\lambda] = \frac{\alpha}{\beta}  = 8$
+* std. dev. $\frac{\sqrt{\alpha}}{\beta} = 1$
+* $\Rightarrow \alpha = 64$
+
+
+### Question 3
+
+Suppose you are not very confident in your prior guess of 8, so you want to use a prior effective sample size of 1/100 cookies. Then the conjugate prior is $\text{Gamma}(a, 0.01)$. Find the value of a. Round your answer to two decimal places.
+
+* prior mean $E[\lambda] = \frac{\alpha}{\beta} = 8$
+* effective sample size $n_{eff} = \beta = 0.01$
+* $\Rightarrow \alpha = 8 \times 0.01 = 0.08$
+
+
+<br>
+**Distributions in Q1, 2, 3**
+```{r echo=FALSE}
+lambda = seq(0, 20, 0.001)
+plot(lambda, dgamma(lambda, 16, 2), type='l', lty=3, lwd=2, col='blue', ylim=c(0,0.4))
+lines(lambda, dgamma(lambda, 64, 8), type='l', lty=2, lwd=2, col='green')
+lines(lambda, dgamma(lambda, 0.08, 0.01), type='l', lty=1, lwd=2, col='orange')
+legend_labels = c("Gamma(16, 2)", "Gamma(64, 8)", "Gamma(0.08, 0.01)")
+legend(30, 0.4, legend = legend_labels, col=c("blue", "green", "orange"), lty=c(3,2,1), lwd=2)
+```
+
+
+
+
+### Question 4
+
+
+Suppose you decide on the prior $\text{Gamma}(8, 1)$, which has prior mean 8 and effective sample size of one cookie.
+
+We collect data, sampling five cookies and counting the chips in each. We find 9, 12, 10, 15, and 13 chips.
+
+What is the posterior distribution for $\lambda$?
+
+* $\Rightarrow \lambda \mid X \sim \text{Beta}(\alpha + n,~\beta + \sum X_i) = ~\text{Beta}(8 + 59,~1 + 5) = \text{Beta}(67, 6)$
+
+
+### Question 5
+
+Continuing the previous question, what of the following graphs shows the prior density (dotted line) and posterior density (solid line) of $\lambda$?
+
+
+```{r echo=FALSE}
+lambda = seq(0, 20, 0.001)
+plot(lambda, dgamma(lambda, 8, 1), type='l', lty=2, lwd=2, col='blue',
+     ylab="Distribution", ylim=c(0, 0.3))
+lines(lambda, dgamma(lambda, 67, 6), type='l', lty=1, lwd=2, col='orange')
+legend_labels = c("Gamma(8, 1)", "Gamma(67, 6)")
+legend(0, 0.99, legend = legend_labels, col=c("blue", "orange"), lty=c(2, 1), lwd=2)
+```
+
+
+### Question 6
+
+Continuing Question 4, what is the posterior mean for $\lambda$? Round your answer to one decimal place.
+
+* posterior mean $E[\lambda \mid Y] = \frac{\alpha ~+~ \sum Y_i}{\beta ~+~ n} = 67/6 = 11.2$
+
+### Question 7
+
+Continuing Question 4, use R or Excel to find the lower end of a 90% equal-tailed credible interval for $\lambda$. Round your answer to one decimal place.
+
+```{r}
+qgamma(p=0.05, shape=67, rate=6)
+```
+
+
+
+### Question 8
+
+
+Continuing Question 4, suppose that in addition to the five cookies reported, we observe an additional ten cookies with 109 total chips. What is the new posterior distribution for $\lambda$, the expected number of chips per cookie?
+
+Hint: You can either use the posterior from the previous analysis as the prior here, or you can start with the original $\text{Gamma(8,1)}$ prior and update with all fifteen cookies. The result will be the same.
+
+* prior from 4) $\lambda \sim \Gamma(67, 6)$
+* posterior $\lambda \mid Y \sim \Gamma(\alpha + \sum Y_i, \beta + n) = \Gamma(67 + 109,~ 6 + 10) = \Gamma(176, 16)$
+
+
+## Poisson process
+
+
+**For Questions 9-10, consider the following scenario:**
+
+A retailer notices that a certain type of customer tends to call their customer service hotline more often than other customers, so they begin keeping track. They decide a Poisson process model is appropriate for counting calls, with calling rate $\theta$ calls per customer per day.
+
+The model for the total number of calls is then $Y \sim \text{Poisson}(n\cdot t \cdot \theta)$ where $n$ is the number of customers in the group and $t$ is the number of days. That is, if we observe the calls from a group with 24 customers for 5 days, the expected number of calls would be $24\cdot 5\cdot \theta = 120\cdot \theta$⋅θ
+
+The likelihood for $Y$ is then $f(y \mid \theta) = \frac{(nt\theta)^y e^{-nt\theta}}{y!} \propto \theta^y e^{-nt\theta}$.
+
+This model also has a conjugate gamma prior $\theta \sim \text{Gamma}(a, b)$ which has density (PDF) $f(\theta) = \frac{b^a}{\Gamma(a)} \theta^{a-1} e^{-b\theta} \propto \theta^{a-1} e^{-b\theta}$.
+
+
+
+### Question 9
+
+
+Following the same procedure outlined in the lesson, find the posterior distribution for $\theta$.
+
+
+Likelihood $Y \sim \text{Poisson}(\theta \cdot n \cdot t)$ $\rightarrow$  $f(y \mid \theta)  \propto \theta^y e^{n t \theta}$ \
+Prior $\Gamma(a, b)$ $\rightarrow$ $f(\theta) \propto \theta^{a-1} e^{-b\theta}$ \
+$\Rightarrow$ Posterior $f(\theta \mid Y) \propto \theta^{a-1} e^{-b\theta} \theta^y e^{-n t\theta} =$
+  $\theta^{a+y-1} e^{-\theta(b+n t)}$ \
+  
+$~~~$ i.e. $\theta\mid Y \sim \Gamma(a+y,~b+nt)$
+
+
+### Question 10
+
+
+On average, the retailer receives 0.01 calls per customer per day. To give this group the benefit of the doubt, they set the prior mean for $\theta$ at 0.01 with standard deviation 0.5. This yields a $\text{Gamma}(\frac{1}{2500}, \frac{1}{25})$ prior for $\theta$.
+
+Suppose there are $n=24$ customers in this particular group of interest, and the retailer monitors calls from these customers for $t=5$ days. They observe a total of y=6y=6 calls from this group.
+
+The following graph shows the resulting $\text{Gamma}(6.0004, 120.04)$ posterior for $\theta$, the calling rate for this group. The vertical dashed line shows the average calling rate of $0.01$.
+
+
+Does this posterior inference for $\theta suggest that the group has a higher calling rate than the average of 0.01 calls per customer per day?
+
+
+* Yes, the posterior mean for $\theta$ is twice the average of $0.01$.
+* Yes, most of the posterior mass (probability) is concentrated on values of $\theta$ greater than $0.01$. **[x]**
+* No, the posterior mean is exactly $0.01$.
+* No, most of the posterior mass (probability) is concentrated on values of $\theta$ less than $0.01$.
+
+------------------------------
+
+[Back to Index](Q_index.html)
+
+------------------------------

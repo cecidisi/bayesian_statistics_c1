@@ -1,0 +1,200 @@
+---
+title: 'Quizz 11: Regression'
+output:
+  html_document:
+    df_print: paged
+---
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+library(plyr)
+library(dplyr)
+```
+
+------------------------------
+
+[Back to Index](Q_index.html)
+
+------------------------------
+
+## Golf
+
+For Questions 1-6, consider the following:
+
+The data found at http://www.stat.ufl.edu/~winner/data/pgalpga2008.dat consist of season statistics for individual golfers on the United States LPGA and PGA tours. The first column reports each player's average driving distance in yards. The second column reports the percentage of the player's drives that finish in the fairway, measuring their accuracy. The third and final column has a 1 to denote a female golfer (on the LPGA tour), and a 2 to denote male golfer (on the PGA tour).
+
+```{r message=TRUE}
+df = as.data.frame(read.table("http://users.stat.ufl.edu/~winner/data/pgalpga2008.dat"))
+names(df) = c("avg_drive_distance", "percent_accuracy", "sex")
+df = df %>%
+  mutate(sex = ifelse(sex == 1, "female", "male"))
+head(df)
+```
+```{r}
+print(ddply(df, .(sex), summarise, N=length(sex)))
+```
+
+
+
+### Question 1
+Create two scatter plots with average drive distance on the x-axis and percent accuracy on the y-axis, one for female golfers and one for male golfers. What do you observe about the relationship between these two variables?
+
+
+* Drive distance and accuracy are positively correlated; greater distances are associated with greater accuracy.
+* Drive distance and accuracy are negatively correlated; greater distances are associated with less accuracy. **[x]**
+* There is no association between driving distance and accuracy.
+
+```{r}
+df.female = subset(df, sex=='female', select=1:2)
+plot(df.female, main="LPGA")
+abline(lm(df.female$percent_accuracy ~ df.female$avg_drive_distance), col="red")
+```
+```{r}
+df.male = subset(df, sex=='male', select=1:2)
+plot(df.male, main="PGA")
+abline(lm(df.male$percent_accuracy ~ df.male$avg_drive_distance), col="blue")
+```
+
+
+### Question 2
+
+Fit a linear regression model to the female golfer data only with drive distance as the explanatory variable xx and accuracy as the response variable yy. Use the standard reference (non-informative) prior.
+
+Recall that in a linear regression, we are modeling $E(y) = b_0 + b_1 x$.
+
+In this particular model, the intercept term is not interpretable, as we would not expect to see a 0-yard drive (but it is still necessary). Predictions should generally be made only within the range of the observed data.
+
+Report the posterior mean estimate of the slope parameter $b$ relating drive distance to accuracy.
+
+```{r}
+lm.lpga = lm(percent_accuracy ~ avg_drive_distance, data=df.female)
+summary(lm.lpga)
+```
+
+**b = -0.26**
+
+
+### Question 3
+
+The posterior mean estimate of the slope from Question 2 is about five standard errors below 0. Hence, the posterior probability that this slope is negative is near 1.
+
+Suppose the estimate is $b$. How do we interpret this value?
+
+* If $x$ is the driving distance, we expect the percentage accuracy to be bxbx.
+* For each additional yard of driving distance, we expect to see a decrease in percentage accuracy of $\lvert b \rvert$. **[x]**
+* For each additional yard of driving distance, we expect to see an increase in percentage accuracy of $\lvert b \rvert$∣.
+* If $x$ is the driving distance, we expect the percentage accuracy to be 100bx100bx.
+
+
+### Question 4
+
+Use the posterior mean estimates of the model coefficients to obtain a posterior predictive mean estimate of driving accuracy for a new female golfer whose average driving distance is $x=260$ yards. Round your answer to one decimal place.
+
+```{r}
+x = data.frame(avg_drive_distance = 260)
+predict(lm.lpga, x, interval="predict")
+```
+
+
+### Question 5
+
+Which of the following gives a 95% posterior predictive interval for the driving accuracy of a new female golfer whose average driving distance is $x=260$ yards?
+Hint: Modify the code provided with this lesson under "prediction interval."
+
+
+* (55.4, 73.0)
+* (62.8, 65.6)
+* (63.0, 65.4)
+* (53.7, 74.7) **[x]**
+
+
+### Question 6
+
+
+What is the correct interpretation of the interval found in Question 5?
+
+* If we select a new female golfer who averages 260 yards per drive, we are 95% confident that the posterior mean for her accuracy would be in the interval. **[x]**
+* If we select a new female golfer who averages 260 yards per drive, our probability that her driving accuracy will be in the interval is .95.
+* For all female golfers who average 260 yards per drive, our probability is .95 that the mean of their driving accuracy is in the interval.
+* For all female golfers who average 260 yards per drive, we are 95% confident that all their driving accuracies will be in the interval.
+
+
+## Module 4 Honors
+
+Consider again the golf data from the regression quiz for Questions 1-4.
+
+
+```{r}
+df2 = df %>% mutate(sex = ifelse(sex == "female", 0, 1))
+ddply(df2, .(sex), summarise, N=length(sex))
+```
+
+### Question 1
+
+Now consider a multiple regression on the full data set, including both female and male golfers. Modify the third variable to be a 0 if the golfer is female and 1 if the golfer is male and fit the following regression:
+
+$E(y) = b_0 + b_1x_1 + b_2x_2$ where $x_1$ is the average driving distance and $x_2$
+
+What is the posterior mean estimate of $b_0$? Round your answer to the nearest whole number.
+
+```{r}
+lm.golf = lm(percent_accuracy ~ avg_drive_distance  + sex, data=df2)
+summary(lm.golf)
+```
+
+```{r}
+plot(df2$avg_drive_distance, df2$percent_accuracy, main="percent_accuracy ~ avg_drive_distance")
+abline(lm(percent_accuracy ~ avg_drive_distance, data=df2), col="orange")
+```
+
+### Question 2
+
+The posterior mean estimates of the other two coefficients are $\hat{b}_1 = -0.323$, and $\hat{b}_2 = 8.94$.
+What is the interpretation of $\hat{b}_1$?
+
+
+* Holding all else constant, being male is associated with a 0.323 increase in drive accuracy percentage.
+* Holding all else constant, being male is associated with a 0.323 decrease in drive accuracy percentage.
+* Holding all else constant, each additional yard of distance is associated with a 0.323 increase in drive accuracy percentage.
+* Holding all else constant, each additional yard of distance is associated with a 0.323 decrease in drive accuracy percentage. ***[x]*
+
+### Question 3
+
+The standard error for $b_1$ (which we can think of as marginal posterior standard deviation in this case) is roughly $1/10$ times the magnitude of the posterior mean estimate $\hat{b}_1 = -0.323$ .
+In other words, the posterior mean is more than 10 posterior standard deviations from 0. What does this suggest?
+
+
+* The posterior probability that $b_1 < 0$ is very low, suggesting a negative relationship between driving distance and accuracy.
+* The posterior probability that $b_1 < 0$ is very high, suggesting a negative relationship between driving distance and accuracy. **[x]**
+* The posterior probability that $b_1 < 0$ is about 0.5, suggesting no evidence for an association between driving distance and accuracy.
+
+
+### Question 4
+
+The estimated value of $b_2$ would typically be interpreted to mean that holding all else constant (for a fixed driving distance), golfers on the PGA tour are about 9% more accurate with their drives on average than golfers on the LPGA tour. However, if you explore the data, you will find that the PGA tour golfers' average drives are 40+ yards longer than LPGA tour golfers' average drives, and that the LPGA tour golfers are actually more accurate on average. Thus $b_2$, while a vital component of the model, is actually a correction for the discrepancy in driving distances. Although model fitting can be easy (especially with software), interpreting the results requires a thoughtful approach.
+
+It would also be prudent to check that the model fits the data well. One of the primary tools in regression analysis is the residual plot. Residuals are defined as the observed values $y$ minus their predicted values $\hat{y}$. Patterns in the plot of $\hat{y}$ versus residuals, for example, can indicate an inadequacy in the model.
+
+
+Fit the regression and examine the residual plots. Which of the following statements most accurately describes the residual plots for this analysis?
+
+```{r}
+plot(fitted(lm.golf), resid(lm.golf))
+```
+
+
+* The residuals appear to be more spread apart for smaller predicted values $\hat{y}$. There are no outliers (extreme observations).
+* The residuals appear to be random and lack any patterns or trends. There are no outliers (extreme observations).
+* The residuals appear to exhibit a curved trend. There is at least one outlier (extreme observation) that we may want to investigate.
+* The residuals appear to be random and lack any patterns or trends. However, there is at least one outlier (extreme observation) that we may want to investigate. **[x]**
+
+
+------------------------------
+
+[Back to Index](Q_index.html)
+
+------------------------------
+
+
+
+

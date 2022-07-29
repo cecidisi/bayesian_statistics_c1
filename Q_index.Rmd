@@ -1,0 +1,20 @@
+---
+title: "Bayesian Statistics: From Concept to Data Analysis"
+author: "Cecilia di Sciascio"
+date: "9/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+[Quizz 07: Binomial](Q07_binomial.html)
+
+[Quizz 08: Poisson](Q08_poisson.html)
+
+[Quizz 09: Exponential](Q09_exponential.html)
+
+[Quizz 10: Normal](Q10_normal.html)
+
+[Quizz 11: Regression](Q11_regression.html)
