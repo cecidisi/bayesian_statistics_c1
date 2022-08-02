@@ -17,4 +17,4 @@ knitr::opts_chunk$set(echo = TRUE)
 
 [Quizz 10: Normal](Q10_normal.html)
 
-[Quizz 11: Regression](Q11_regression.html)
+[Quizz 12: Regression](Q12_regression.html)

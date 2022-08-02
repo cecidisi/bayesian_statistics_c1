@@ -8,7 +8,7 @@ output:
 
 ------------------------------
 
-[Back to Index](Q_index.html)
+[Back to Index](index.html)
 
 ------------------------------
 
@@ -185,7 +185,7 @@ Then $\alpha = 2$, $\beta = 3$
 
 ------------------------------
 
-[Back to Index](Q_index.html)
+[Back to Index](index.html)
 
 ------------------------------
 

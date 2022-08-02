@@ -7,7 +7,7 @@ output:
 
 ------------------------------
 
-[Back to Index](Q_index.html)
+[Back to Index](index.html)
 
 ------------------------------
 
@@ -50,11 +50,11 @@ Suppose you are not very confident in your prior guess of 8, so you want to use 
 * $\Rightarrow \alpha = 8 \times 0.01 = 0.08$
 
 
-<br>
-**Distributions in Q1, 2, 3**
+<!-- <br> -->
+
 ```{r echo=FALSE}
-lambda = seq(0, 20, 0.001)
-plot(lambda, dgamma(lambda, 16, 2), type='l', lty=3, lwd=2, col='blue', ylim=c(0,0.4))
+lambda = seq(0, 20, 0.01)
+plot(lambda, dgamma(lambda, 16, 2), type='l', lty=3, lwd=2, col='blue', ylim=c(0,0.4), main="Distributions in Q1, 2, 3")
 lines(lambda, dgamma(lambda, 64, 8), type='l', lty=2, lwd=2, col='green')
 lines(lambda, dgamma(lambda, 0.08, 0.01), type='l', lty=1, lwd=2, col='orange')
 legend_labels = c("Gamma(16, 2)", "Gamma(64, 8)", "Gamma(0.08, 0.01)")
@@ -82,7 +82,7 @@ Continuing the previous question, what of the following graphs shows the prior d
 
 
 ```{r echo=FALSE}
-lambda = seq(0, 20, 0.001)
+lambda = seq(0, 20, 0.01)
 plot(lambda, dgamma(lambda, 8, 1), type='l', lty=2, lwd=2, col='blue',
      ylab="Distribution", ylim=c(0, 0.3))
 lines(lambda, dgamma(lambda, 67, 6), type='l', lty=1, lwd=2, col='orange')
@@ -167,6 +167,6 @@ Does this posterior inference for $\theta suggest that the group has a higher ca
 
 ------------------------------
 
-[Back to Index](Q_index.html)
+[Back to Index](index.html)
 
 ------------------------------

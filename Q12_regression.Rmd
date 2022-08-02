@@ -1,5 +1,5 @@
 ---
-title: 'Quizz 11: Regression'
+title: 'Quizz 12: Regression'
 output:
   html_document:
     df_print: paged
@@ -13,7 +13,7 @@ library(dplyr)
 
 ------------------------------
 
-[Back to Index](Q_index.html)
+[Back to Index](index.html)
 
 ------------------------------
 
@@ -80,10 +80,10 @@ The posterior mean estimate of the slope from Question 2 is about five standard 
 
 Suppose the estimate is $b$. How do we interpret this value?
 
-* If $x$ is the driving distance, we expect the percentage accuracy to be bxbx.
+* If $x$ is the driving distance, we expect the percentage accuracy to be $bx$.
 * For each additional yard of driving distance, we expect to see a decrease in percentage accuracy of $\lvert b \rvert$. **[x]**
 * For each additional yard of driving distance, we expect to see an increase in percentage accuracy of $\lvert b \rvert$∣.
-* If $x$ is the driving distance, we expect the percentage accuracy to be 100bx100bx.
+* If $x$ is the driving distance, we expect the percentage accuracy to be $100bx$.
 
 
 ### Question 4
@@ -113,8 +113,8 @@ Hint: Modify the code provided with this lesson under "prediction interval."
 
 What is the correct interpretation of the interval found in Question 5?
 
-* If we select a new female golfer who averages 260 yards per drive, we are 95% confident that the posterior mean for her accuracy would be in the interval. **[x]**
-* If we select a new female golfer who averages 260 yards per drive, our probability that her driving accuracy will be in the interval is .95.
+* If we select a new female golfer who averages 260 yards per drive, we are 95% confident that the posterior mean for her accuracy would be in the interval.
+* If we select a new female golfer who averages 260 yards per drive, our probability that her driving accuracy will be in the interval is .95. **[x]**
 * For all female golfers who average 260 yards per drive, our probability is .95 that the mean of their driving accuracy is in the interval.
 * For all female golfers who average 260 yards per drive, we are 95% confident that all their driving accuracies will be in the interval.
 
@@ -156,7 +156,7 @@ What is the interpretation of $\hat{b}_1$?
 * Holding all else constant, being male is associated with a 0.323 increase in drive accuracy percentage.
 * Holding all else constant, being male is associated with a 0.323 decrease in drive accuracy percentage.
 * Holding all else constant, each additional yard of distance is associated with a 0.323 increase in drive accuracy percentage.
-* Holding all else constant, each additional yard of distance is associated with a 0.323 decrease in drive accuracy percentage. ***[x]*
+* Holding all else constant, each additional yard of distance is associated with a 0.323 decrease in drive accuracy percentage. **[x]**
 
 ### Question 3
 
@@ -191,7 +191,7 @@ plot(fitted(lm.golf), resid(lm.golf))
 
 ------------------------------
 
-[Back to Index](Q_index.html)
+[Back to Index](index.html)
 
 ------------------------------
 

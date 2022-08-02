@@ -7,7 +7,7 @@ output:
 
 ------------------------------
 
-[Back to Index](Q_index.html)
+[Back to Index](index.html)
 
 ------------------------------
 
@@ -33,11 +33,11 @@ b
 
 ### Question 2
 
-Suppose that we wish to use a prior with the same mean (1/20), but with effective sample size of one arrival. Then the prior for $\lambda$ is \text{Gamma}(1, 20)Gamma(1,20).
+Suppose that we wish to use a prior with the same mean (1/20), but with effective sample size of one arrival. Then the prior for $\lambda$ is $\text{Gamma}(1, 20$).
 
 In addition to the original $Y_1=12$, we observe the waiting times for four additional buses: $Y_2=15$, $Y_3=8$, $Y_4=13.5$, $Y_5=25$.
 
-Recall that with multiple (independent) observations, the posterior for $\lambda$ is \text{Gamma}(\alpha, \beta) where $\alpha = a + n$ and $\beta = b + \sum y_i$.
+Recall that with multiple (independent) observations, the posterior for $\lambda$ is $\text{Gamma}(\alpha, \beta)$ where $\alpha = a + n$ and $\beta = b + \sum y_i$.
 
 What is the posterior mean for $\lambda$? Round your answer to two decimal places.
 
@@ -72,7 +72,7 @@ lambda = seq(0, 0.4, .01)
 plot(lambda, dgamma(lambda, a, b), type='l', lty=1, lwd=2, col='darkblue')
 lines(lambda, dgamma(lambda, a.post, b.post), col='darkorange', lty=2, lwd=2)
 title("Distribution of lambda for bus waiting times")
-legend(0.57, 20, legend = c("prior Gamma(1, 5)", "posterior Gamma(6, 93.5)"), col=c("darkblue", "darkorange"), lty=c(1, 2), lwd=2)
+legend(0.22, 20, legend = c("prior Gamma(1, 5)", "posterior Gamma(6, 93.5)"), col=c("darkblue", "darkorange"), lty=c(1, 2), lwd=2)
 abline(v=0.1, col="grey", lty=3, lwd=1.5)
 
 ```
@@ -249,7 +249,7 @@ plot(x, post.pred.dist(x, a.post, b.post), type='l', lty=1, lwd=2, col='green',
  
 ------------------------------
 
-[Back to Index](Q_index.html)
+[Back to Index](index.html)
 
 ------------------------------
  
